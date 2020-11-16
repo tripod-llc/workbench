@@ -5,7 +5,7 @@ services:
     image: 'postgres:13.1'
     restart: always
     volumes:
-      - 'dbdata:/var/lib/postgresql/data'
+      - 'db-data:/var/lib/postgresql/data'
     ports:
       - "5432:5432"
     environment:
@@ -44,7 +44,7 @@ services:
       - BALANCE_SNAPSHOT_USD_QUOTE_ASSET
       - DATABASE_URL
     volumes:
-      - webbuild:/app/_build
+      - web-build:/app/_build
       - ./.env:/app/.env
       - ./mix.exs:/app/mix.exs
       - ./mix.lock:/app/mix.lock
@@ -60,6 +60,19 @@ services:
       - ./priv/repo:/app/priv/repo
     entrypoint: "mix setup.deps && mix phx.server"
 
+  grafana:
+    image: grafana/grafana:7.3.2
+    build:
+      context: ./grafana
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - '4001:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+
 volumes:
-  dbdata:
-  webbuild:
+  db-data:
+  web-build:
+  grafana-data:
