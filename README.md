@@ -69,6 +69,18 @@ Run migrations
 $ mix ecto.migrate
 ```
 
+## Running workbench as a standalone endpoint
+
+Add the workbench phoenix endpoint to your config
+
+```elixir
+config :workbench, WorkbenchWeb.Endpoint,
+  http: [port: 4000],
+  url: [host: "workbench.lvh.me", port: "4000"],
+```
+
+## Embedding workbench in your own Elixir project
+
 ## Development
 
 You can run the app natively on the host
